@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.geometry.Pos;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
@@ -68,6 +69,13 @@ public class TimeZoneApp extends Application {
 
         Scene scene = new Scene(layout, 780, 500);
 
+        //Make it so enter acts the same way as pressing the button
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                fetchTimeData(countryInput, resultDisplay, countryTime, date);
+            }
+        });
+
         updateTime(countryTime, resultDisplay);
 
         primaryStage.setTitle("Time Zone Viewer");
@@ -94,7 +102,7 @@ public class TimeZoneApp extends Application {
 
     private Button createFetchButton(Font font) {
         Button fetchButton = new Button("Get Time");
-        fetchButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        fetchButton.setStyle("-fx-background-color: #DB7093; -fx-text-fill: white;");
         fetchButton.setFont(font);
         setFetchButtonHoverEffect(fetchButton);
         return fetchButton;
@@ -127,32 +135,36 @@ public class TimeZoneApp extends Application {
         fetchButton.hoverProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 // Mouse entered button
-                fetchButton.setStyle("-fx-background-color: #66BB6A; -fx-text-fill: white;");
+                fetchButton.setStyle("-fx-background-color: #DD7E9E; -fx-text-fill: white;");
                 fetchButton.setScaleX(1.15); // Increase size by 15% horizontally
-                fetchButton.setScaleY(1.15); // Increase size by 15% verticall
+                fetchButton.setScaleY(1.15); // Increase size by 15% vertically
             } else {
                 // Mouse exited button
-                fetchButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+                fetchButton.setStyle("-fx-background-color: #DB7093; -fx-text-fill: white;");
                 fetchButton.setScaleX(1.0); // Reset size
                 fetchButton.setScaleY(1.0); // Reset size
             }
         });
     }
 
-    private void fetchTimeData(TextField countryInput, Label resultDisplay, Label countryTime, Label date) {
+    private void fetchTimeData(TextField countryInput, Label resultDisplay, Label countryTime, Label date)  {
         countryName = countryInput.getText(); //take text from the input box
         String result = ApiClient.getTimeZoneData(countryName); //fecth data from api
-        int startIndex = result.indexOf("datetime") + 11; // Find the index where the datetime value starts
-        int endIndex = result.indexOf("+"); // Find the index where the timezone offset starts
-        String datetime = result.substring(startIndex, endIndex); // Extract the datetime string
-        String countryDate = datetime.split("T")[0];
-        String time = datetime.split("T")[1].split("\\.")[0]; //extract only hours/minutes/seconds
+        if (result.contains("datetime")) {
+            int startIndex = result.indexOf("datetime") + 11; // Find the index where the datetime value starts
+            int endIndex = result.indexOf("+"); // Find the index where the timezone offset starts
+            String datetime = result.substring(startIndex, endIndex); // Extract the datetime string
+            String countryDate = datetime.split("T")[0];
+            String time = datetime.split("T")[1].split("\\.")[0]; //extract only hours/minutes/seconds
 
-        resultDisplay.setText(time); //display time
-        date.setText(countryName + " Date: " + countryDate);
-        countryTime.setText(countryName + " time:"); //update from local time to user's input country
+            resultDisplay.setText(time); //display time
+            date.setText(countryName + " Date: " + countryDate);
+            countryTime.setText(countryName + " time:"); //update from local time to user's input country
+        }
+        else{
+            countryInput.setText("Error incorrect Timezone");
+        }
     }
-
     private void updateTime(Label countryTime, Label resultDisplay) {
         Timeline timeline;
         timeline = new Timeline(
@@ -167,10 +179,10 @@ public class TimeZoneApp extends Application {
 
                           resultDisplay.setText(time); //display time
                           countryTime.setText(countryName + " time:");
-                     }
+                      }
                   }
                   else{
-                      //If the api has not been used yet we update the local time
+                      //If the api has not been used, yet we update the local time
                       String currentTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
                       resultDisplay.setText(currentTime);
                   }
