@@ -14,7 +14,6 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -30,18 +29,19 @@ public class TimeZoneApp extends Application {
         //create the fonts and background
         Font font = new Font("Impact", 52);
         Font inputFont = Font.font("Segoe UI", 18);
-        Font labelFont = Font.font("Segoe UI", FontWeight.BOLD, 18);
         Background background = new Background(new BackgroundFill(Color.PINK, null, null));
         Color textColor = Color.BLACK;
 
-        //create all of our GUI components
-        Label team = UIComponents.createTeamLabel(background, textColor);
-        Label countryTime = UIComponents.createCountryTimeLabel(background, font, textColor);
-        TextField countryInput = UIComponents.createCountryInput(inputFont);
-        Button fetchButton = UIComponents.createFetchButton(labelFont);
-        Label date = UIComponents.createDateLabel(background, textColor);
-        Label resultDisplay = UIComponents.createResultDisplayLabel(font, background, textColor);
-        ToggleButton switchButton = UIComponents.createSwitchButton();
+        UIComponents components = new UIComponents(background, textColor, inputFont, font);
+
+        //Get all of our GUI components
+        Label team = components.getTeamLabel();
+        Label countryTime = components.getCountryTimeLabel();
+        TextField countryInput = components.getCountryInput();
+        Button fetchButton = components.getFetchButton();
+        Label date = components.getDateLabel();
+        Label resultDisplay = components.getResultDisplayLabel();
+        ToggleButton switchButton = components.getSwitchButton();
 
         //Whenever the button is pressed we take everything from the input box and try to get api result from it.
         fetchButton.setOnAction(e -> fetchTimeData(countryInput, resultDisplay, countryTime, date));
@@ -70,7 +70,7 @@ public class TimeZoneApp extends Application {
         Scene scene = new Scene(layout, 780, 500);
 
         //Initialize so that pressing the color switch button actually switches the color
-        new ColorSwitchingButton( layout, layoutSearchAndResult, background);
+        new ColorSwitchingButton( layout, layoutSearchAndResult, background, components);
 
         //Make it so enter acts the same way as pressing the button
         scene.setOnKeyPressed(event -> {

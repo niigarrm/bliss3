@@ -21,15 +21,15 @@ public class ColorSwitchingButton {
 
   private boolean isRed = false;
 
-  public ColorSwitchingButton(VBox layout, VBox layoutSearchAndResult, Background backgroundPink) {
+  public ColorSwitchingButton(VBox layout, VBox layoutSearchAndResult, Background backgroundPink, UIComponents components) {
 
     //Make sure to add final, so they cannot be changed somehow.
-    final ToggleButton switchButton = UIComponents.getSwitchButton();
-    final Label team = UIComponents.getTeamLabel();
-    final Label countryTime = UIComponents.getCountryTimeLabel();
-    final Label date = UIComponents.getDateLabel();
-    final Label resultDisplay = UIComponents.getResultDisplayLabel();
-    final Button fetchButton = UIComponents.getFetchButton();
+    final ToggleButton switchButton = components.getSwitchButton();
+    final Label team = components.getTeamLabel();
+    final Label countryTime = components.getCountryTimeLabel();
+    final Label date = components.getDateLabel();
+    final Label resultDisplay = components.getResultDisplayLabel();
+    final Button fetchButton = components.getFetchButton();
 
     Background backgroundBlack = new Background(new BackgroundFill(
             Color.rgb(55, 55, 55), null, null));

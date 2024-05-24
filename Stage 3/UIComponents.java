@@ -13,81 +13,53 @@ import java.time.format.DateTimeFormatter;
 
 public class UIComponents {
 
-  //everything is static, so we don't need to initialize UIComponents and can use them directly.
-  private static Label dateLabel;
-  private static TextField countryInput;
-  private static Button fetchButton;
-  private static ToggleButton switchButton;
-  private static Label resultDisplayLabel;
-  private static Label countryTimeLabel;
-  private static Label teamLabel;
-
-  // Public static factory methods to create UI components
-  public static Label createDateLabel(Background background, Color textColor) {
+  private Label dateLabel;
+  private TextField countryInput;
+  private Button fetchButton;
+  private ToggleButton switchButton;
+  private Label resultDisplayLabel;
+  private Label countryTimeLabel;
+  private Label teamLabel;
+  public UIComponents(Background background, Color textColor, Font inputFont, Font font ){
     initializeDateLabel(background, textColor);
-    return dateLabel;
-  }
-
-  public static TextField createCountryInput(Font inputFont) {
     initializeCountryInput(inputFont);
-    return countryInput;
-  }
-
-  public static Button createFetchButton(Font font) {
-    initializeFetchButton(font);
-    return fetchButton;
-  }
-
-  public static ToggleButton createSwitchButton() {
+    initializeFetchButton(inputFont);
     initializeSwitchButton();
-    return switchButton;
-  }
-
-  public static Label createResultDisplayLabel(Font font, Background background, Color textColor) {
-    initializeResultDisplayLabel(font, background, textColor);
-    return resultDisplayLabel;
-  }
-
-  public static Label createCountryTimeLabel(Background background, Font font, Color textColor) {
     initializeCountryTimeLabel(background, font, textColor);
-    return countryTimeLabel;
-  }
-
-  public static Label createTeamLabel(Background background, Color textColor) {
     initializeTeamLabel(background, textColor);
-    return teamLabel;
+    initializeResultDisplayLabel(font, background, textColor);
   }
 
-  public static Label getDateLabel() {
+  public Label getDateLabel() {
     return dateLabel;
   }
 
-  public static TextField getCountryInput() {
+  public TextField getCountryInput() {
     return countryInput;
   }
 
-  public static Button getFetchButton() {
+  public Button getFetchButton() {
     return fetchButton;
   }
 
-  public static ToggleButton getSwitchButton() {
+  public ToggleButton getSwitchButton() {
     return switchButton;
   }
 
-  public static Label getResultDisplayLabel() {
+  public  Label getResultDisplayLabel() {
     return resultDisplayLabel;
   }
 
-  public static Label getCountryTimeLabel() {
+  public Label getCountryTimeLabel() {
     return countryTimeLabel;
   }
 
-  public static Label getTeamLabel() {
+  public Label getTeamLabel() {
     return teamLabel;
   }
 
   // Private static methods to initialize UI components
-  private static void initializeDateLabel(Background background, Color textColor) {
+  private void initializeDateLabel(Background background, Color textColor) {
     String localDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     dateLabel = new Label("Date: " + localDate);
     dateLabel.setFont(new Font("Impact", 26));
@@ -95,26 +67,26 @@ public class UIComponents {
     dateLabel.setBackground(background);
   }
 
-  private static void initializeCountryInput(Font inputFont) {
+  private void initializeCountryInput(Font inputFont) {
     countryInput = new TextField();
     countryInput.setPrefSize(250, 36);
     countryInput.setStyle("-fx-background-color: #f0f0f0; -fx-text-fill: #333333;");
     countryInput.setFont(inputFont);
   }
 
-  private static void initializeFetchButton(Font font) {
+  private void initializeFetchButton(Font font) {
     fetchButton = new Button("Get Time");
     fetchButton.setStyle("-fx-background-color: #DB7093; -fx-text-fill: white;");
     fetchButton.setFont(font);
     setFetchButtonHoverEffect(fetchButton);
   }
 
-  private static void initializeSwitchButton() {
+  private void initializeSwitchButton() {
     switchButton = new ToggleButton("Dark mode");
     switchButton.setFont(new Font("Impact", 18));
   }
 
-  private static void initializeResultDisplayLabel(Font font, Background background, Color textColor) {
+  private void initializeResultDisplayLabel(Font font, Background background, Color textColor) {
     String localTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
     resultDisplayLabel = new Label(localTime);
     resultDisplayLabel.setBackground(background);
@@ -122,14 +94,14 @@ public class UIComponents {
     resultDisplayLabel.setFont(font);
   }
 
-  private static void initializeCountryTimeLabel(Background background, Font font, Color textColor) {
+  private void initializeCountryTimeLabel(Background background, Font font, Color textColor) {
     countryTimeLabel = new Label("Local time: ");
     countryTimeLabel.setBackground(background);
     countryTimeLabel.setTextFill(textColor);
     countryTimeLabel.setFont(font);
   }
 
-  private static void initializeTeamLabel(Background background, Color textColor) {
+  private void initializeTeamLabel(Background background, Color textColor) {
     teamLabel = new Label("Made by team: Bliss3");
     teamLabel.setBackground(background);
     teamLabel.setTextFill(textColor);
@@ -137,7 +109,7 @@ public class UIComponents {
   }
 
   // Private static method for setting fetch button hover effect
-  private static void setFetchButtonHoverEffect(Button fetchButton) {
+  private void setFetchButtonHoverEffect(Button fetchButton) {
     fetchButton.hoverProperty().addListener((observable, oldValue, newValue) -> {
       if (newValue) {
         // Mouse entered button
