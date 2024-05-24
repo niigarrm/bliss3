@@ -24,7 +24,6 @@ import java.time.format.DateTimeFormatter;
 
 public class TimeZoneApp extends Application {
 
-    private String countryName;
     @Override
     public void start(Stage primaryStage) {
 
@@ -70,8 +69,8 @@ public class TimeZoneApp extends Application {
 
         Scene scene = new Scene(layout, 780, 500);
 
-        new ColorSwitchingButton(switchButton, layout, layoutSearchAndResult, team, countryTime,
-                date, resultDisplay, fetchButton, background);
+        //Initialize so that pressing the color switch button actually switches the color
+        new ColorSwitchingButton( layout, layoutSearchAndResult, background);
 
         //Make it so enter acts the same way as pressing the button
         scene.setOnKeyPressed(event -> {
@@ -88,6 +87,7 @@ public class TimeZoneApp extends Application {
     }
 
     private void fetchTimeData(TextField countryInput, Label resultDisplay, Label countryTime, Label date)  {
+        String countryName;
         countryName = countryInput.getText(); //take text from the input box
         String result = ApiClient.getTimeZoneData(countryName); //fetch data from api
         if (result.contains("datetime")) {
@@ -114,7 +114,7 @@ public class TimeZoneApp extends Application {
         Timeline timeline;
         timeline = new Timeline(
               new KeyFrame(Duration.seconds(1), e -> {
-                  if (!countryTime.getText().equals("Local time: ")) {
+                  if (!countryTime.toString().equals("Local time: ")) {
                       String timeString = resultDisplay.getText();
                       LocalTime time = LocalTime.parse(timeString);
                       time = time.plusSeconds(1);

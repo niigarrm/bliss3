@@ -10,48 +10,67 @@ import javafx.scene.paint.Color;
 
 public class ColorSwitchingButton {
 
+  private final String darkModeText = "Dark mode";
+  private final String lightModeText = "Light mode";
+  private final String baseButtonColorDark = "#483D8B";
+  private final String hoverButtonColorDark = "#605CA7";
+  private final String baseButtonColorLight = "#D4748E";
+  private final String hoverButtonColorLight = "#DD7E9E";
+  private final Color defaultText = Color.BLACK;
+  private final Color darkModeTextColor = Color.RED;
+
   private boolean isRed = false;
 
-  public ColorSwitchingButton(ToggleButton switchButton, VBox layout, VBox layoutSearchAndResult,
-                              Label team, Label countryTime, Label date, Label resultDisplay,
-                              Button fetchButton, Background backgroundPink) {
+  public ColorSwitchingButton(VBox layout, VBox layoutSearchAndResult, Background backgroundPink) {
+
+    //Make sure to add final, so they cannot be changed somehow.
+    final ToggleButton switchButton = UIComponents.getSwitchButton();
+    final Label team = UIComponents.getTeamLabel();
+    final Label countryTime = UIComponents.getCountryTimeLabel();
+    final Label date = UIComponents.getDateLabel();
+    final Label resultDisplay = UIComponents.getResultDisplayLabel();
+    final Button fetchButton = UIComponents.getFetchButton();
 
     Background backgroundBlack = new Background(new BackgroundFill(
             Color.rgb(55, 55, 55), null, null));
-
-    Color defaultText = Color.BLACK;
 
     switchButton.setTextFill(defaultText);
     switchButton.setStyle("-fx-background-color: transparent;");
 
     switchButton.setOnAction(event -> {
-      // When we press the button we change the value of isRed, so it will switch to a different color.
       isRed = !isRed;
-
-      Color textColor;
-      Background background;
       if (isRed) {
-        background = backgroundBlack;
-        textColor = Color.RED;
-        switchColour(switchButton, layout, layoutSearchAndResult, team, countryTime,
-                date, resultDisplay, fetchButton, background, textColor, "#483D8B", "#605CA7");
-        switchButton.setText("Light mode");
-      } else {
-        background = backgroundPink;
-        switchColour(switchButton, layout, layoutSearchAndResult, team, countryTime,
-                date, resultDisplay, fetchButton, background, defaultText, "#D4748E", "#DD7E9E");
-        switchButton.setText("Dark mode");
+        applyColorScheme(switchButton, layout, layoutSearchAndResult, team, countryTime,
+                date, resultDisplay, fetchButton, backgroundBlack, darkModeTextColor,
+                baseButtonColorDark, hoverButtonColorDark, lightModeText);
+      }
+      else {
+        applyColorScheme(switchButton, layout, layoutSearchAndResult, team, countryTime,
+                date, resultDisplay, fetchButton, backgroundPink, defaultText,
+                baseButtonColorLight, hoverButtonColorLight, darkModeText);
       }
     });
   }
 
-  private void switchColour(ToggleButton switchButton, VBox layout, VBox layoutSearchAndResult,
-                            Label team, Label countryTime, Label date, Label resultDisplay,
-                            Button fetchButton, Background background, Color textColor,
-                            String baseButtonColor, String hoverButtonColor) {
+  private void applyColorScheme(ToggleButton switchButton, VBox layout, VBox layoutSearchAndResult,
+                                Label team, Label countryTime, Label date, Label resultDisplay,
+                                Button fetchButton, Background background, Color textColor,
+                                String baseButtonColor, String hoverButtonColor, String buttonText) {
 
     switchButton.setTextFill(textColor);
     switchButton.setBackground(background);
+    switchButton.setText(buttonText);
+
+    updateGUIColors(layout, layoutSearchAndResult, team, countryTime, date, resultDisplay, background, textColor);
+
+    fetchButton.setStyle("-fx-background-color: " + baseButtonColor + "; -fx-text-fill: white;");
+    setFetchButtonHoverEffect(fetchButton, hoverButtonColor, baseButtonColor);
+  }
+
+  //This class is for updating specifically UI components colours
+  private void updateGUIColors(VBox layout, VBox layoutSearchAndResult,
+                               Label team, Label countryTime, Label date, Label resultDisplay,
+                               Background background, Color textColor) {
 
     layout.setBackground(background);
     layoutSearchAndResult.setBackground(background);
@@ -67,22 +86,16 @@ public class ColorSwitchingButton {
 
     resultDisplay.setTextFill(textColor);
     resultDisplay.setBackground(background);
-
-    // Update fetchButton base color
-    fetchButton.setStyle("-fx-background-color: " + baseButtonColor + "; -fx-text-fill: white;");
-    // Update fetchButton hover effect colors
-    setFetchButtonHoverEffect(fetchButton, hoverButtonColor, baseButtonColor);
   }
 
   private void setFetchButtonHoverEffect(Button fetchButton, String hoverColor, String baseColor) {
     fetchButton.hoverProperty().addListener((observable, oldValue, newValue) -> {
       if (newValue) {
-        // Mouse entered button area
         fetchButton.setStyle("-fx-background-color: " + hoverColor + "; -fx-text-fill: white;");
         fetchButton.setScaleX(1.15); // Increase size by 15% horizontally
         fetchButton.setScaleY(1.15); // Increase size by 15% vertically
-      } else {
-        // Mouse exited button area
+      }
+      else {
         fetchButton.setStyle("-fx-background-color: " + baseColor + "; -fx-text-fill: white;");
         fetchButton.setScaleX(1.0); // Reset size
         fetchButton.setScaleY(1.0); // Reset size
