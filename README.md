@@ -3,17 +3,32 @@
 Our project aims to develop a Java application that allows users to view the current time and time zone of any country by simply typing in it’s name. This project uses Java programming language and utilizes an external API to fetch data. The application will also feature a graphical user interface (GUI) to enhance user experience and interaction.
 
 ## How to use
-1. Download and input the files from 'Source' directory to your javafx project.
-2. Run the project.
-3. In the search bar please input your desired timezone. **Examples**: Europe/Vilnius; Europe/Berlin; Asia/Tokyo; America/Los_Angeles;
-4. Press the button or enter on your keyboard to see the timezone Date and Time update live.
-5. Whenever you want to close the project hit the X button on the window or stop the project in your IDE.
+1. Download and input the files from 'Stage3' directory to your javafx project.
+2. The structure should look like this:
+project-name
+│
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── your-package-name
+│   │   │       ├── Main.java
+│   │   │       ├── ColorSwitchingButton.java
+│   │   │       ├── TimeZoneOptions.java
+│   │   │       ├── UIComponents.java
+│   │   │       ├── ApiClient.java
+│   │   │       └── TimeZoneApp.java
+│   │   └── resources
+│   │       └── Options.txt
+4. Run the project. Make sure the txt file is in correct place otherwise the code will not work.
+5. Choose the timezone from the list.
+6. Press the button or enter on your keyboard to see the timezone Date and Time update live.
+7. Whenever you want to close the project hit the X button on the window or stop the project in your IDE.
 
 ## Installing guide: 
-1. First you will need to download javafx sdk  for your specific machine from here: https://gluonhq.com/products/javafx/  
+1. First you will need to download javafx sdk for your specific machine from here: https://gluonhq.com/products/javafx/  
 2. Extract sdk file.
 3. Create a new javafx project.
-4. Add javafx sdk to the project. Go to the left top corner and press file/project structure/ +/java/find your sdk file/ok/apply/ok
+4. Add javafx sdk to the project. Go to the left top corner and press file/project structure/+/java/find your sdk file/ok/apply/ok
 5. In case you are having trouble setting up javafx on intellij refer to the following video for reference: https://www.youtube.com/watch?v=Ope4icw6bVk 
 
 ### Key Components:
