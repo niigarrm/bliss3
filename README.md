@@ -5,6 +5,7 @@ Our project aims to develop a Java application that allows users to view the cur
 ## How to use
 1. Download and input the files from 'Stage3' directory to your javafx project.
 2. The structure should look like this:
+```
 project-name
 │
 ├── src
@@ -19,6 +20,7 @@ project-name
 │   │   │       └── TimeZoneApp.java
 │   │   └── resources
 │   │       └── Options.txt
+```
 4. Run the project. Make sure the txt file is in correct place otherwise the code will not work.
 5. Choose the timezone from the list.
 6. Press the button or enter on your keyboard to see the timezone Date and Time update live.
