@@ -3,6 +3,8 @@ package org.example.timezoneviewer;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
@@ -30,6 +32,13 @@ public class ColorSwitchingButton {
     final Label date = components.getDateLabel();
     final Label resultDisplay = components.getResultDisplayLabel();
     final Button fetchButton = components.getFetchButton();
+
+    //Make sure enter cannot trigger our button
+    switchButton.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        event.consume(); // Consume the enter key event
+      }
+    });
 
     Background backgroundBlack = new Background(new BackgroundFill(
             Color.rgb(55, 55, 55), null, null));

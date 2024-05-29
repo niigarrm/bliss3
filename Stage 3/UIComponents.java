@@ -11,7 +11,6 @@ import java.time.format.DateTimeFormatter;
 public class UIComponents {
 
   private Label dateLabel;
-  private TextField countryInput;
   private Button fetchButton;
   private ToggleButton switchButton;
   private Label resultDisplayLabel;
@@ -21,7 +20,6 @@ public class UIComponents {
 
   public UIComponents(Background background, Color textColor, Font inputFont, Font font) {
     initializeDateLabel(background, textColor);
-    initializeCountryInput(inputFont);
     initializeFetchButton(inputFont);
     initializeSwitchButton();
     initializeCountryTimeLabel(background, font, textColor);
@@ -32,10 +30,6 @@ public class UIComponents {
 
   public Label getDateLabel() {
     return dateLabel;
-  }
-
-  public TextField getCountryInput() {
-    return countryInput;
   }
 
   public Button getFetchButton() {
@@ -70,13 +64,6 @@ public class UIComponents {
     dateLabel.setBackground(background);
   }
 
-  private void initializeCountryInput(Font inputFont) {
-    countryInput = new TextField();
-    countryInput.setPrefSize(250, 36);
-    countryInput.setStyle("-fx-background-color: #f0f0f0; -fx-text-fill: #333333;");
-    countryInput.setFont(inputFont);
-  }
-
   private void initializeFetchButton(Font font) {
     fetchButton = new Button("Get Time");
     fetchButton.setStyle("-fx-background-color: #DB7093; -fx-text-fill: white;");
@@ -86,7 +73,7 @@ public class UIComponents {
 
   private void initializeSwitchButton() {
     switchButton = new ToggleButton("Dark mode");
-    switchButton.setFont(new Font("Impact", 18));
+    switchButton.setFont(new Font("Impact", 24));
   }
 
   private void initializeResultDisplayLabel(Font font, Background background, Color textColor) {
@@ -108,7 +95,7 @@ public class UIComponents {
     teamLabel = new Label("Made by team: Bliss3");
     teamLabel.setBackground(background);
     teamLabel.setTextFill(textColor);
-    teamLabel.setFont(new Font("Impact", 18));
+    teamLabel.setFont(new Font("Impact", 24));
   }
 
   private void initializeContinentCityDropdown() {
@@ -226,21 +213,14 @@ public class UIComponents {
 
     continentCityDropdown = new ComboBox<>();
     continentCityDropdown.getItems().addAll(continentCityOptions);
-    continentCityDropdown.setValue(continentCityOptions[0]); // Set default selection if needed
+    continentCityDropdown.setValue(continentCityOptions[1]);
+    continentCityDropdown.setPrefSize(250, 36);
 
     continentCityDropdown.setOnAction(e -> {
       String selectedContinentCity = continentCityDropdown.getValue();
       // Handle the selection if needed
       System.out.println("Selected: " + selectedContinentCity);
-      updateCountryTimeLabel(selectedContinentCity);
     });
-  }
-
-  private void updateCountryTimeLabel(String selectedContinentCity) {
-    // Implement API call or data retrieval based on the selected continent/city
-    // Placeholder example implementation
-    String timeZoneData = "Timezone data for " + selectedContinentCity;
-    countryTimeLabel.setText("Local time: " + timeZoneData);
   }
 
   // Private static method for setting fetch button hover effect

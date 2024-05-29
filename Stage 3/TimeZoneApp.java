@@ -47,9 +47,9 @@ public class TimeZoneApp extends Application {
         fetchButton.setOnAction(e -> fetchTimeData(continentCityDropdown, resultDisplay, countryTime, date));
 
         // Align our components in the GUI
-        HBox teamName = new HBox(495, switchButton, team);
+        HBox teamName = new HBox(400, switchButton, team);
         teamName.setAlignment(Pos.TOP_CENTER);
-        teamName.setPadding(new Insets(5, 10, 5, 10));
+        teamName.setPadding(new Insets(10, 10, 10, 10));
 
         HBox searchBar = new HBox(15, continentCityDropdown, fetchButton);
         searchBar.setAlignment(Pos.TOP_CENTER);
@@ -75,7 +75,9 @@ public class TimeZoneApp extends Application {
         // Make it so enter acts the same way as pressing the button
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                fetchTimeData(continentCityDropdown, resultDisplay, countryTime, date);
+                if (continentCityDropdown.isFocused() || fetchButton.isFocused()) {
+                    fetchTimeData(continentCityDropdown, resultDisplay, countryTime, date);
+                }
             }
         });
 
@@ -88,10 +90,13 @@ public class TimeZoneApp extends Application {
 
     private void fetchTimeData(ComboBox<String> continentCityDropdown, Label resultDisplay, Label countryTime, Label date) {
         String countryName = continentCityDropdown.getValue(); // Take selected value from the dropdown
-        String result = ApiClient.getTimeZoneData(countryName); // Fetch data from API
+        String result;
+        result = ApiClient.getTimeZoneData(countryName); // Fetch data from API
+        result = result.replaceAll("\n", "");
+        result = result.replaceAll(" ", "");
         if (result.contains("datetime")) {
-            int startIndex = result.indexOf("datetime") + 11; // Find the index where the datetime value starts
-            int endIndex = result.indexOf("+"); // Find the index where the timezone offset starts
+            int startIndex = result.indexOf("datetime\":\"") + 11; // Find the index where the datetime value starts
+            int endIndex = result.indexOf("+", startIndex); // Find the index where the timezone offset starts
             String datetime = result.substring(startIndex, endIndex); // Extract the datetime string
             String countryDate = datetime.split("T")[0];
             String time = datetime.split("T")[1].split("\\.")[0]; // Extract only hours/minutes/seconds
@@ -107,6 +112,7 @@ public class TimeZoneApp extends Application {
             resultDisplay.setText("Error: incorrect Timezone");
         }
     }
+
 
     private void updateTime(Label countryTime, Label resultDisplay) {
         Timeline timeline;
@@ -127,9 +133,5 @@ public class TimeZoneApp extends Application {
         );
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }
