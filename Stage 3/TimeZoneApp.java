@@ -90,10 +90,8 @@ public class TimeZoneApp extends Application {
 
     private void fetchTimeData(ComboBox<String> continentCityDropdown, Label resultDisplay, Label countryTime, Label date) {
         String countryName = continentCityDropdown.getValue(); // Take selected value from the dropdown
-        String result;
-        result = ApiClient.getTimeZoneData(countryName); // Fetch data from API
-        result = result.replaceAll("\n", "");
-        result = result.replaceAll(" ", "");
+        String result = ApiClient.getTimeZoneData(countryName); // Fetch data from API
+        result = result.replaceAll("\n", "").replaceAll(" ", "");
         if (result.contains("datetime")) {
             int startIndex = result.indexOf("datetime\":\"") + 11; // Find the index where the datetime value starts
             int endIndex = result.indexOf("+", startIndex); // Find the index where the timezone offset starts
@@ -112,7 +110,6 @@ public class TimeZoneApp extends Application {
             resultDisplay.setText("Error: incorrect Timezone");
         }
     }
-
 
     private void updateTime(Label countryTime, Label resultDisplay) {
         Timeline timeline;
