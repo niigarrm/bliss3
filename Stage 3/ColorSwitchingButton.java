@@ -21,17 +21,24 @@ public class ColorSwitchingButton {
   private final Color defaultText = Color.BLACK;
   private final Color darkModeTextColor = Color.RED;
 
+  private final ToggleButton switchButton;
+  private final Label team;
+  private final Label countryTime;
+  private final Label date;
+  private final Label resultDisplay;
+  private final Button fetchButton;
+
   private boolean isRed = false;
 
   public ColorSwitchingButton(VBox layout, VBox layoutSearchAndResult, Background backgroundPink, UIComponents components) {
 
     //Make sure to add final, so they cannot be changed somehow.
-    final ToggleButton switchButton = components.getSwitchButton();
-    final Label team = components.getTeamLabel();
-    final Label countryTime = components.getCountryTimeLabel();
-    final Label date = components.getDateLabel();
-    final Label resultDisplay = components.getResultDisplayLabel();
-    final Button fetchButton = components.getFetchButton();
+    switchButton = components.getSwitchButton();
+    team = components.getTeamLabel();
+    countryTime = components.getCountryTimeLabel();
+    date = components.getDateLabel();
+    resultDisplay = components.getResultDisplayLabel();
+    fetchButton = components.getFetchButton();
 
     //Make sure enter cannot trigger our button
     switchButton.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
@@ -49,36 +56,31 @@ public class ColorSwitchingButton {
     switchButton.setOnAction(event -> {
       isRed = !isRed;
       if (isRed) {
-        applyColorScheme(switchButton, layout, layoutSearchAndResult, team, countryTime,
-                date, resultDisplay, fetchButton, backgroundBlack, darkModeTextColor,
+        applyColorScheme(layout, layoutSearchAndResult, backgroundBlack, darkModeTextColor,
                 baseButtonColorDark, hoverButtonColorDark, lightModeText);
       }
       else {
-        applyColorScheme(switchButton, layout, layoutSearchAndResult, team, countryTime,
-                date, resultDisplay, fetchButton, backgroundPink, defaultText,
+        applyColorScheme(layout, layoutSearchAndResult, backgroundPink, defaultText,
                 baseButtonColorLight, hoverButtonColorLight, darkModeText);
       }
     });
   }
 
-  private void applyColorScheme(ToggleButton switchButton, VBox layout, VBox layoutSearchAndResult,
-                                Label team, Label countryTime, Label date, Label resultDisplay,
-                                Button fetchButton, Background background, Color textColor,
+  private void applyColorScheme(VBox layout, VBox layoutSearchAndResult, Background background, Color textColor,
                                 String baseButtonColor, String hoverButtonColor, String buttonText) {
 
     switchButton.setTextFill(textColor);
     switchButton.setBackground(background);
     switchButton.setText(buttonText);
 
-    updateGUIColors(layout, layoutSearchAndResult, team, countryTime, date, resultDisplay, background, textColor);
+    updateGUIColors(layout, layoutSearchAndResult, background, textColor);
 
     fetchButton.setStyle("-fx-background-color: " + baseButtonColor + "; -fx-text-fill: white;");
-    setFetchButtonHoverEffect(fetchButton, hoverButtonColor, baseButtonColor);
+    setFetchButtonHoverEffect(hoverButtonColor, baseButtonColor);
   }
 
   //This class is for updating specifically UI components colours
   private void updateGUIColors(VBox layout, VBox layoutSearchAndResult,
-                               Label team, Label countryTime, Label date, Label resultDisplay,
                                Background background, Color textColor) {
 
     layout.setBackground(background);
@@ -97,7 +99,7 @@ public class ColorSwitchingButton {
     resultDisplay.setBackground(background);
   }
 
-  private void setFetchButtonHoverEffect(Button fetchButton, String hoverColor, String baseColor) {
+  private void setFetchButtonHoverEffect(String hoverColor, String baseColor) {
     fetchButton.hoverProperty().addListener((observable, oldValue, newValue) -> {
       if (newValue) {
         fetchButton.setStyle("-fx-background-color: " + hoverColor + "; -fx-text-fill: white;");
